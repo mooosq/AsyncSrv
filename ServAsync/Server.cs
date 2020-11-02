@@ -24,6 +24,9 @@ namespace ServAsync
         private byte[] logOutInfo = Encoding.ASCII.GetBytes("User with this login is still logged in! Logging out...");
         private byte[] backToMain = Encoding.ASCII.GetBytes("Exiting to main... Write 'login' or 'register' and retype credentials: ");
 
+        /// <summary>
+        /// Glowna funkcja uruchamiajaca serwer
+        /// </summary>
         public void SetupServer()
         {
             userData.Add("admin","admin");
@@ -35,6 +38,10 @@ namespace ServAsync
             Console.WriteLine("Configuration complete!");
         }
 
+        /// <summary>
+        /// Callback akceptujacy polaczenie klienta
+        /// </summary>
+        /// <param name="ar"></param>
         private void AcceptCallback(IAsyncResult ar)
         {
             Socket socket = servSocekt.EndAccept(ar);
@@ -45,6 +52,10 @@ namespace ServAsync
             servSocekt.BeginAccept(AcceptCallback, null);
         }
 
+        /// <summary>
+        /// Callback wyboru opcji logowania lub rejestracji
+        /// </summary>
+        /// <param name="ar"></param>
         private void ChoiceCallback(IAsyncResult ar)
         {
             
@@ -100,6 +111,11 @@ namespace ServAsync
             }
         }
 
+        /// <summary>
+        /// Funkcja odpowiadajaca za logowanie klienta po polaczeniu sie z serwerem
+        /// </summary>
+        /// <param name="socket">Aktualne gniazdo, z ktorym skojarzony jest klient</param>
+        /// <param name="login">Login uzytkownika</param>
         private void Login(Socket socket, byte[] login)
         {
             try
@@ -136,6 +152,10 @@ namespace ServAsync
             }
         }
 
+        /// <summary>
+        /// Glowny callback gry, to tutaj obslugiwana jest rozgrywka
+        /// </summary>
+        /// <param name="ar"></param>
         private void GameCallback(IAsyncResult ar)
         {
             Socket socket = (Socket)ar.AsyncState;
@@ -220,6 +240,10 @@ namespace ServAsync
             }
         }
 
+        /// <summary>
+        /// Funkcja odpowiadajaca za obsluge rejestracji uzytkownika
+        /// </summary>
+        /// <param name="socket">Gniazdko skojarzone z danym klientem</param>
         private void Register(Socket socket)
         {
             try
@@ -240,6 +264,11 @@ namespace ServAsync
             }
         }
 
+        /// <summary>
+        /// Funkcja odbierajaca dane od klienta
+        /// </summary>
+        /// <param name="socket">Gniazdo skojarzone z danym klientem</param>
+        /// <returns></returns>
         private byte[] Receive(Socket socket)
         {
             byte[] bytes = new byte[1024];
@@ -269,6 +298,10 @@ namespace ServAsync
             return bytes;
         }
 
+        /// <summary>
+        /// Callback odpowiadajacy za wyslanie danych z serwera do klienta
+        /// </summary>
+        /// <param name="ar"></param>
         private void SendCallback(IAsyncResult ar)
         {
             Socket socket = (Socket)ar.AsyncState;
